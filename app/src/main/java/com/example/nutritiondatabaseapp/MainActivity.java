@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -33,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button signOutButton;
     private int RC_SIGN_IN = 1;
+
+    private Button enterBtn;
+    private EditText weightBar;
+    private EditText heightBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,16 @@ public class MainActivity extends AppCompatActivity {
                 signOutButton.setVisibility(View.INVISIBLE);
             }
         });
+
+        enterBtn = (Button) findViewById(R.id.proceedBtn);
+        enterBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Get hacked nerd xoxo", Toast.LENGTH_SHORT);
+            }
+        });
+        weightBar = (EditText) findViewById(R.id.weightInput);
+        heightBar = (EditText) findViewById(R.id.heightInput);
 
     }
     private void signIn(){
@@ -109,6 +124,12 @@ public class MainActivity extends AppCompatActivity {
     }
     private void updateUI(FirebaseUser user){
         signOutButton.setVisibility(View.VISIBLE);
+
+        enterBtn.setVisibility(View.VISIBLE);
+        weightBar.setVisibility(View.VISIBLE);
+        heightBar.setVisibility(View.VISIBLE);
+
+
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (account != null){
             String personName = account.getDisplayName();
