@@ -25,6 +25,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private Button enterBtn;
     private EditText weightBar;
     private EditText heightBar;
-
+    private User user = new User();
+    GoogleSignInAccount account;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -69,15 +72,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        weightBar = (EditText) findViewById(R.id.weightInput);
+        heightBar = (EditText) findViewById(R.id.heightInput);
         enterBtn = (Button) findViewById(R.id.proceedBtn);
         enterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Get hacked nerd xoxo", Toast.LENGTH_SHORT);
+                Toast.makeText(MainActivity.this, "Get hacked nerd xoxo", Toast.LENGTH_SHORT).show();
+                user.setWeight((int) Integer.parseInt(String.valueOf(weightBar.getText())));
+                user.setHeight((int) Integer.parseInt(String.valueOf(heightBar.getText())));
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                mDatabase.child("users").child(account.getDisplayName()).setValue(user);
             }
         });
-        weightBar = (EditText) findViewById(R.id.weightInput);
-        heightBar = (EditText) findViewById(R.id.heightInput);
 
     }
     private void signIn(){
@@ -129,8 +136,7 @@ public class MainActivity extends AppCompatActivity {
         weightBar.setVisibility(View.VISIBLE);
         heightBar.setVisibility(View.VISIBLE);
 
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
         if (account != null){
             String personName = account.getDisplayName();
             String personGivenName = account.getGivenName();
@@ -140,8 +146,7 @@ public class MainActivity extends AppCompatActivity {
             Uri personPhoto = account.getPhotoUrl();
 
 
-            startActivity(new Intent(MainActivity.this, MainActivity.class));
-
+            //startActivity(new Intent(MainActivity.this, MainActivity.class));
         }
     }
 }
