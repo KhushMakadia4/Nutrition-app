@@ -81,20 +81,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void signIn(){
+        System.out.println("signin start");
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+        System.out.println("signin end");
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        System.out.println("onActivityResult start");
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
+        System.out.println("onActivityResult end");
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask){
+        System.out.println("handleSignInResult start");
         try {
             GoogleSignInAccount acc = completedTask.getResult(ApiException.class);
             Toast.makeText(MainActivity.this, "Signed In Successfully", Toast.LENGTH_SHORT).show();
@@ -104,8 +109,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
             FirebaseGoogleAuth(null);
         }
+        System.out.println("handleSignInResult end");
     }
     private void FirebaseGoogleAuth(GoogleSignInAccount acct){
+        System.out.println("firebasegoogleauth start");
         AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -121,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        System.out.println("firebasegoogleauth end");
     }
     private void updateUI(FirebaseUser user){
         signOutButton.setVisibility(View.VISIBLE);
@@ -140,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             Uri personPhoto = account.getPhotoUrl();
 
 
-            startActivity(new Intent(MainActivity.this, MainActivity.class));
+//            startActivity(new Intent(MainActivity.this, MainActivity.class));
 
         }
     }
