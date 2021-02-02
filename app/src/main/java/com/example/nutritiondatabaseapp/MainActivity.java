@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 user.setHeight((int) Integer.parseInt(String.valueOf(heightBar.getText())));
                 DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                 mDatabase.child("users").child(account.getDisplayName()).setValue(user);
+//                startActivity(new Intent(MainActivity.this, MainActivity.class));
             }
         });
 
@@ -124,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(MainActivity.this, "Unsuccessful", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });
@@ -145,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
             String personId = account.getId();
             Uri personPhoto = account.getPhotoUrl();
 
-
-            //startActivity(new Intent(MainActivity.this, MainActivity.class));
         }
     }
 }
