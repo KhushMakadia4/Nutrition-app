@@ -1,6 +1,5 @@
 package com.example.nutritiondatabaseapp;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +19,6 @@ public class SearchFragment extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
 }
