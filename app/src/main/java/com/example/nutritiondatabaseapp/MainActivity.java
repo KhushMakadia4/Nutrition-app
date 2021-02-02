@@ -147,8 +147,8 @@ public class MainActivity extends AppCompatActivity {
                         String personEmail = account.getEmail();
                         String personId = account.getId();
                         Uri personPhoto = account.getPhotoUrl();
-                        //startActivity(new Intent(MainActivity.this, MainActivity.class));
-                    }
+
+                                            }
 
 
                     //loop through to find if user is duplicate
