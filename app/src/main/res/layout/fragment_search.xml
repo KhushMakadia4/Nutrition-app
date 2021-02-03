@@ -10,14 +10,26 @@
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="173dp"
-        android:layout_height="73dp"
-        android:layout_marginStart="119dp"
-        android:layout_marginLeft="119dp"
+        android:layout_width="117dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="236dp"
+        android:layout_marginLeft="236dp"
         android:layout_marginTop="126dp"
         android:layout_marginBottom="532dp"
         android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <AutoCompleteTextView
+        android:id="@+id/searchTextView"
+        android:layout_width="391dp"
+        android:layout_height="57dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="16dp"
+        android:hint="Search Foods"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

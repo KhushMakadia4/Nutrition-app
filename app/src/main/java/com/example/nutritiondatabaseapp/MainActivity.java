@@ -8,7 +8,12 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -103,7 +108,6 @@ public class MainActivity extends AppCompatActivity {
 //                setContentView(R.layout.fragment_search);
             }
         });
-
     }
     private void signIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
