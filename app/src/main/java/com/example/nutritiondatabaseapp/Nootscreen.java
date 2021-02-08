@@ -1,5 +1,6 @@
 package com.example.nutritiondatabaseapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
  */
 public class Nootscreen extends AppCompatActivity {
 
+    private Button searchActBtn;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,7 +26,13 @@ public class Nootscreen extends AppCompatActivity {
         setContentView(R.layout.fragment_nootscreen);
 
 
-
+        searchActBtn = findViewById(R.id.searchActBtn);
+        searchActBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Nootscreen.this, SearchFragment.class));
+            }
+        });
 
     }
 

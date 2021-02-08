@@ -9,35 +9,38 @@
     <!-- TODO: Update blank fragment layout -->
 
     <Button
-        android:id="@+id/searchBtn"
-        android:layout_width="117dp"
-        android:layout_height="49dp"
-        android:text="Search"
-        app:layout_constraintEnd_toStartOf="@+id/searchTextView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
         android:id="@+id/backBtn"
         android:layout_width="117dp"
         android:layout_height="49dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="2dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="16dp"
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/searchBtn"
+        android:layout_width="117dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="276dp"
+        android:layout_marginLeft="276dp"
+        android:layout_marginTop="14dp"
+        android:text="Search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/searchTextView"
         android:layout_width="246dp"
         android:layout_height="48dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="48dp"
-        android:layout_marginRight="48dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="Search Foods"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
