@@ -12,35 +12,22 @@
         android:id="@+id/searchBtn"
         android:layout_width="117dp"
         android:layout_height="49dp"
-        android:layout_marginStart="276dp"
-        android:layout_marginLeft="276dp"
-        android:layout_marginBottom="668dp"
-        android:text="Search"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="Search" />
 
     <Button
         android:id="@+id/backBtn"
         android:layout_width="117dp"
         android:layout_height="49dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginBottom="16dp"
-        android:text="Back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:text="Back" />
 
     <EditText
         android:id="@+id/searchTextView"
         android:layout_width="246dp"
         android:layout_height="48dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginLeft="14dp"
-        android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="Search Foods"
         android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="1dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
