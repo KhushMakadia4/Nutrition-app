@@ -9,17 +9,6 @@
     <!-- TODO: Update blank fragment layout -->
 
     <Button
-        android:id="@+id/searchBtn"
-        android:layout_width="117dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="276dp"
-        android:layout_marginLeft="276dp"
-        android:layout_marginBottom="668dp"
-        android:text="Search"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
         android:id="@+id/backBtn"
         android:layout_width="117dp"
         android:layout_height="49dp"
@@ -29,6 +18,17 @@
         android:text="Back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/searchBtn"
+        android:layout_width="117dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="276dp"
+        android:layout_marginLeft="276dp"
+        android:layout_marginTop="14dp"
+        android:text="Search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/searchTextView"
