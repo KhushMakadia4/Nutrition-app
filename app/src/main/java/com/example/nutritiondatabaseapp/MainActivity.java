@@ -2,11 +2,13 @@ package com.example.nutritiondatabaseapp;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.method.KeyListener;
@@ -37,6 +39,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     FragmentTransaction fragmentTransaction;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -68,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-
+        System.out.println(modifiedDate(LocalDate.now().toString()));
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -101,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 user.setWeight((int) Integer.parseInt(String.valueOf(weightBar.getText())));
                 user.setHeight((int) Integer.parseInt(String.valueOf(heightBar.getText())));
+                Date xDate = java.util.Calendar.getInstance().getTime();
                 mDatabase.child("users").child(account.getDisplayName()).setValue(user);
 
                 //fragment work
@@ -112,6 +119,16 @@ public class MainActivity extends AppCompatActivity {
     private void signIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private static String modifiedDate(String date) {
+        String month = "";
+        String day = "";
+        String year = "";
+        year = date.substring(0,4);
+        month = date.substring(5, 7);
+        day = date.substring(8);
+        return month+"/"+day+"/"+year;
     }
 
     @Override
