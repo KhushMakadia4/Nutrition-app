@@ -1,5 +1,6 @@
 package com.example.nutritiondatabaseapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,8 +25,9 @@ import java.util.Arrays;
  */
 public class SearchFragment extends AppCompatActivity {
 
-
-    private AutoCompleteTextView searchTV;
+    private TextView searchTV;
+    private Button searchBtn;
+    private Button backBtn;
 
 
     @Override
@@ -33,35 +36,24 @@ public class SearchFragment extends AppCompatActivity {
         setContentView(R.layout.fragment_search);
 
 
-        searchTV = findViewById(R.id.searchTextView);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item);
-        searchTV.setAdapter(adapter);
-
-            searchTV.setOnKeyListener(new View.OnKeyListener() {
-                @Override
-                public boolean onKey(View view, int i, KeyEvent keyEvent) {
-                    System.out.println(i + " , " + (int)(keyEvent.getDisplayLabel()) + " , " + keyEvent.getAction() + " , " + keyEvent.getNumber());
-
-                    if ((int)(keyEvent.getDisplayLabel())>=65 && (int)(keyEvent.getDisplayLabel())<=90) {
-                        System.out.println("ALLAHU AKBAR");
-                        ArrayList<String> foods = new ArrayList<>();
-                        foods.add("Allahu");
-                        foods.add("Akbar");
-                        //call api here and populate foods
-                        adapter.addAll(foods);
-                        searchTV.setAdapter(adapter);
-                    } else {
-                        try {
-                            searchTV.setText(searchTV.getText().toString().substring(0, searchTV.getText().length()));
-                        }catch (Exception e) {}
-                    }
-                    return false;
-                }
-            });
-
 //search bar auto complete text view
 
+        searchTV = findViewById(R.id.searchTextView);
+        searchBtn = findViewById(R.id.searchBtn);
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String xy = searchTV.getText().toString();
+            }
+        });
 
+        backBtn = findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SearchFragment.this, Nootscreen.class));
+            }
+        });
 
 //        searchTV.setKeyListener(new KeyListener() {
 //            @Override

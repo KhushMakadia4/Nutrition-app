@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadSearchFrag() {
-        startActivity(new Intent(MainActivity.this, SearchFragment.class));
+        startActivity(new Intent(MainActivity.this, Nootscreen.class));
 
 
 //        findViewById(R.id.fragment_container).setVisibility(View.VISIBLE);
