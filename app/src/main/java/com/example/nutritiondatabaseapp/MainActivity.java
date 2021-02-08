@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     //loop through to find if user is duplicate
-                    mDatabase.child("users").addValueEventListener(new ValueEventListener() {
+                    mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             Iterator<DataSnapshot> items = dataSnapshot.getChildren().iterator();

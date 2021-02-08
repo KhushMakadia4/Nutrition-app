@@ -9,13 +9,13 @@
     <!-- TODO: Update blank fragment layout -->
 
     <TextView
-        android:id="@+id/cholesterol"
+        android:id="@+id/carbohydrate"
         android:layout_width="245dp"
         android:layout_height="33dp"
         android:layout_marginStart="12dp"
         android:layout_marginLeft="12dp"
         android:layout_marginTop="104dp"
-        android:text="Cholesterol:"
+        android:text="Carbohydrates:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTextView" />
 
@@ -97,5 +97,15 @@
         android:text="Sugar:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTextView" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,18 +3,16 @@ package com.example.nutritiondatabaseapp;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
-import android.text.method.KeyListener;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,8 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,13 +30,12 @@ import java.util.Arrays;
  */
 public class SearchFragment extends AppCompatActivity {
 
-    private TextView searchTV,calories,fat,cholesterol,carbs,protein,sugar;
+    private TextView searchTV,calories,fat,cholesterol,carb,protein,sugar;
     private Button searchBtn;
     private Button backBtn;
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
-
+    private Button btn2;
+    GoogleSignInAccount account;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +55,8 @@ public class SearchFragment extends AppCompatActivity {
         });
         calories = findViewById(R.id.cals);
         fat = findViewById(R.id.fat);
-        cholesterol = findViewById(R.id.cholesterol);
+        carb = findViewById(R.id.carbohydrate);
+        btn2 = findViewById(R.id.button2);
 
         sugar = findViewById(R.id.sugar);
         protein = findViewById(R.id.protein);
@@ -74,7 +71,7 @@ public class SearchFragment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String food = searchTV.getText().toString();
-                String url1 = "https://api.nutritionix.com/v1_1/search/" + food + "?results=0:20&fields=nf_calories,nf_total_fat,nf_cholesterol,nf_protein,nf_sugars,nf_total_carbohydrates&appId=d7be3755&appKey=181927e63a4766687741bbe69f3c6ed6";//api URL MUST HAVE HTTPS:// THAT IS NOT OPTIONAL
+                String url1 = "https://api.nutritionix.com/v1_1/search/" + food + "?results=0:20&fields=nf_calories,nf_total_fat,nf_cholesterol,nf_protein,nf_sugars,nf_total_carbohydrate&appId=d7be3755&appKey=181927e63a4766687741bbe69f3c6ed6";//api URL MUST HAVE HTTPS:// THAT IS NOT OPTIONAL
 
                 new AsyncHttpClient().get(url1, new AsyncHttpResponseHandler() {
                     @Override
@@ -82,13 +79,13 @@ public class SearchFragment extends AppCompatActivity {
                         String str = new String(responseBody);//this will show all the raw data which can be substringed for individual data
                         final double cals  = Double.parseDouble(str.substring(str.indexOf("nf_calories")+13,str.indexOf("nf_total_fat")-2));
                         final double fats  = Double.parseDouble(str.substring(str.indexOf("nf_total_fat")+14,str.indexOf("nf_cholesterol")-2));
-                        final double cholesterols  = Double.parseDouble(str.substring(str.indexOf("nf_cholesterol")+17,str.indexOf("nf_sugars")-2));
+                        final double carbs  = Double.parseDouble(str.substring(str.indexOf("nf_total_carbohydrate")+24,str.indexOf("nf_sugar")-2));
                         final double sugars  = Double.parseDouble(str.substring(str.indexOf("nf_sugar")+11,str.indexOf("nf_protein")-2));
                         final double proteins  = Double.parseDouble(str.substring(str.indexOf("nf_protein")+12,str.indexOf("nf_serving")-2));
 
                         calories.setText("Calories: " + cals);
                         fat.setText("Fat: " + fats);
-                        cholesterol.setText("Cholesterol: " + cholesterols);
+                        carb.setText("Carbohydrates: " + carbs);
                         sugar.setText("Sugar: " + sugars);
                         protein.setText("Protein:  " + proteins);
 
@@ -104,28 +101,49 @@ public class SearchFragment extends AppCompatActivity {
                 });
             }
         });
+        account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabase.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> items = dataSnapshot.getChildren().iterator();
+                        boolean hasUser = false;
+                        while (items.hasNext()) {
+                            DataSnapshot item = items.next();
+                            System.out.println(item);
+                            if (item.getKey().equals(account.getDisplayName())) {
+                                //copy the user data
+                                setUserValues(item);
+                                //go to new fragment
+                                break;
+                            }
+                        }
+                    }
 
-//        searchTV.setKeyListener(new KeyListener() {
-//            @Override
-//            public int getInputType() {
-//                return 0;
-//            }
-//
-//            @Override
-//            public boolean onKeyDown(View view, Editable editable, int i, KeyEvent keyEvent) { return false; }
-//
-//            @Override
-//            public boolean onKeyUp(View view, Editable editable, int i, KeyEvent keyEvent) {
-//                System.out.println(keyEvent.getKeyCode() + " , " + keyEvent.getAction() + " , " + keyEvent.getNumber());
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onKeyOther(View view, Editable editable, KeyEvent keyEvent) { return false; }
-//
-//            @Override
-//            public void clearMetaKeyState(View view, Editable editable, int i) {}
-//        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+            }
+        });
+
+
+
+
+    }
+    private void setUserValues(DataSnapshot item) {
+        double cals = Double.parseDouble(item.child("calories").getValue().toString());
+        double carbs = Double.parseDouble(item.child("carbs").getValue().toString());
+        double fats = Double.parseDouble(item.child("fat").getValue().toString());
+        double proteins = Double.parseDouble(item.child("protein").getValue().toString());
+        double sugars = Double.parseDouble(item.child("sugar").getValue().toString());
+        mDatabase.child("users").child(account.getDisplayName()).child("calories").setValue(cals+Double.parseDouble(calories.getText().toString().substring(calories.getText().toString().indexOf(":")+1)));
+        mDatabase.child("users").child(account.getDisplayName()).child("carbs").setValue(carbs+Double.parseDouble(carb.getText().toString().substring(carb.getText().toString().indexOf(":")+1)));
+
+
+
 
     }
 
