@@ -173,7 +173,7 @@
         android:layout_marginLeft="32dp"
         android:layout_marginTop="212dp"
         android:gravity="center|right"
-        android:text="Weight"
+        android:text="Weight:"
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

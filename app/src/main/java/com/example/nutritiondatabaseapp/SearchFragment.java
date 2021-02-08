@@ -15,6 +15,14 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -25,9 +33,12 @@ import java.util.Arrays;
  */
 public class SearchFragment extends AppCompatActivity {
 
-    private TextView searchTV;
+    private TextView searchTV,calories,fat,cholesterol,carbs,protein,sugar;
     private Button searchBtn;
     private Button backBtn;
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+
+
 
 
     @Override
@@ -46,12 +57,51 @@ public class SearchFragment extends AppCompatActivity {
                 String xy = searchTV.getText().toString();
             }
         });
+        calories = findViewById(R.id.cals);
+        fat = findViewById(R.id.fat);
+        cholesterol = findViewById(R.id.cholesterol);
 
+        sugar = findViewById(R.id.sugar);
+        protein = findViewById(R.id.protein);
         backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(SearchFragment.this, Nootscreen.class));
+            }
+        });
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String food = searchTV.getText().toString();
+                String url1 = "https://api.nutritionix.com/v1_1/search/" + food + "?results=0:20&fields=nf_calories,nf_total_fat,nf_cholesterol,nf_protein,nf_sugars,nf_total_carbohydrates&appId=d7be3755&appKey=181927e63a4766687741bbe69f3c6ed6";//api URL MUST HAVE HTTPS:// THAT IS NOT OPTIONAL
+
+                new AsyncHttpClient().get(url1, new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                        String str = new String(responseBody);//this will show all the raw data which can be substringed for individual data
+                        final double cals  = Double.parseDouble(str.substring(str.indexOf("nf_calories")+13,str.indexOf("nf_total_fat")-2));
+                        final double fats  = Double.parseDouble(str.substring(str.indexOf("nf_total_fat")+14,str.indexOf("nf_cholesterol")-2));
+                        final double cholesterols  = Double.parseDouble(str.substring(str.indexOf("nf_cholesterol")+17,str.indexOf("nf_sugars")-2));
+                        final double sugars  = Double.parseDouble(str.substring(str.indexOf("nf_sugar")+11,str.indexOf("nf_protein")-2));
+                        final double proteins  = Double.parseDouble(str.substring(str.indexOf("nf_protein")+12,str.indexOf("nf_serving")-2));
+
+                        calories.setText("Calories: " + cals);
+                        fat.setText("Fat: " + fats);
+                        cholesterol.setText("Cholesterol: " + cholesterols);
+                        sugar.setText("Sugar: " + sugars);
+                        protein.setText("Protein:  " + proteins);
+
+
+
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                        error.printStackTrace();//wil print error message
+                    }
+
+                });
             }
         });
 
