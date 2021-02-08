@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="304dp"
         android:layout_marginLeft="304dp"
-        android:layout_marginTop="664dp"
+        android:layout_marginTop="556dp"
         android:text="Search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
