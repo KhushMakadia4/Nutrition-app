@@ -44,6 +44,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Iterator;
 
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class MainActivity extends AppCompatActivity {
 
     private SignInButton signInButton;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText heightBar;
     private User user = new User();
     GoogleSignInAccount account;
+    public static LocalDate date = LocalDate.now();
 
 
     FragmentTransaction fragmentTransaction;
@@ -108,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 user.setWeight((int) Integer.parseInt(String.valueOf(weightBar.getText())));
                 user.setHeight((int) Integer.parseInt(String.valueOf(heightBar.getText())));
                 Date xDate = java.util.Calendar.getInstance().getTime();
-                mDatabase.child("users").child(account.getDisplayName()).setValue(user);
+                mDatabase.child("users").child(account.getDisplayName()).child(modifiedDate(date.toString())).setValue(user);
 
                 //fragment work
                 loadSearchFrag();
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private static String modifiedDate(String date) {
+    public static String modifiedDate(String date) {
         String month = "";
         String day = "";
         String year = "";
