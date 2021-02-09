@@ -12,10 +12,9 @@
         android:id="@+id/carbohydrate"
         android:layout_width="245dp"
         android:layout_height="33dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="104dp"
         android:text="Carbohydrates:"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTextView" />
 
@@ -23,10 +22,9 @@
         android:id="@+id/fat"
         android:layout_width="245dp"
         android:layout_height="33dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="72dp"
         android:text="Fat:"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTextView" />
 
@@ -69,10 +67,9 @@
         android:id="@+id/cals"
         android:layout_width="245dp"
         android:layout_height="33dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="40dp"
         android:text="Calories:"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTextView" />
 
@@ -80,10 +77,9 @@
         android:id="@+id/protein"
         android:layout_width="245dp"
         android:layout_height="33dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="136dp"
         android:text="Protein:"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTextView" />
 
@@ -91,10 +87,9 @@
         android:id="@+id/sugar"
         android:layout_width="245dp"
         android:layout_height="33dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="168dp"
         android:text="Sugar:"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchTextView" />
 
@@ -102,7 +97,7 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

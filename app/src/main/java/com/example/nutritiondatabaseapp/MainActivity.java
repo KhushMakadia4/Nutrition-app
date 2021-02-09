@@ -59,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
     private EditText weightBar;
     private EditText heightBar;
     private User user = new User();
+    private Daily dailyUser = new Daily();
     GoogleSignInAccount account;
-    public static LocalDate date = LocalDate.now();
+    static LocalDate date = LocalDate.now();
 
 
     FragmentTransaction fragmentTransaction;
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        System.out.println(modifiedDate(LocalDate.now().toString()));
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -110,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 user.setWeight((int) Integer.parseInt(String.valueOf(weightBar.getText())));
                 user.setHeight((int) Integer.parseInt(String.valueOf(heightBar.getText())));
                 Date xDate = java.util.Calendar.getInstance().getTime();
-                mDatabase.child("users").child(account.getDisplayName()).child(modifiedDate(date.toString())).setValue(user);
+                mDatabase.child("users").child(account.getDisplayName()).setValue(user);
+                mDatabase.child("users").child(account.getDisplayName()).child(modifiedDate(LocalDate.now().toString())).setValue(dailyUser);
 
                 //fragment work
                 loadSearchFrag();
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         year = date.substring(0,4);
         month = date.substring(5, 7);
         day = date.substring(8);
-        return month+"/"+day+"/"+year;
+        return month+"-"+day+"-"+year;
     }
 
     @Override
@@ -184,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                                 DataSnapshot item = items.next();
                                 System.out.println(item);
                                 if (item.getKey().equals(account.getDisplayName())) {
-                                    System.out.println("ALLAHU AKBAR");
+
                                     hasUser = true;
 
                                     Toast.makeText(MainActivity.this, "Welcome Back!", Toast.LENGTH_SHORT).show();
