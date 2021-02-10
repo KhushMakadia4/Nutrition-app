@@ -60,7 +60,7 @@ public class Nootscreen extends AppCompatActivity {
                 startActivity(new Intent(Nootscreen.this, SearchFragment.class));
             }
         });
-        setTextviews();
+        setTextviews("+");
         weightTV = findViewById(R.id.weightTV);
         weightTV.setText(Integer.toString(MainActivity.getUser().getWeight()));
 
@@ -100,7 +100,7 @@ public class Nootscreen extends AppCompatActivity {
 //                        @Override
 //                        public void onCancelled(@NonNull DatabaseError databaseError) {}
 //                    });
-                    setTextviews();
+                    setTextviews("-");
                 }catch (Exception e) {
                     Toast.makeText(Nootscreen.this, "No future dates", Toast.LENGTH_SHORT).show();
                 }
@@ -131,7 +131,7 @@ public class Nootscreen extends AppCompatActivity {
 //                        @Override
 //                        public void onCancelled(@NonNull DatabaseError databaseError) {}
 //                    });
-                    setTextviews();
+                    setTextviews("+");
                 }catch (Exception e) {
                     Toast.makeText(Nootscreen.this, "No previous dates", Toast.LENGTH_SHORT).show();
                 }
@@ -191,7 +191,7 @@ public class Nootscreen extends AppCompatActivity {
         });
     }
 
-    private void setTextviews() {
+    private void setTextviews(final String plusMinus) {
         mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(viewDate.toString())).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -202,7 +202,11 @@ public class Nootscreen extends AppCompatActivity {
                     proteinTV.setText(dataSnapshot.child("protein").getValue().toString());
                     sugarTV.setText(dataSnapshot.child("sugar").getValue().toString());
                 }catch (Exception e) {
-                    viewDate = viewDate.minusDays(1);
+                    if (plusMinus.equals("-")) {
+                        viewDate = viewDate.minusDays(1);
+                    }else {
+                        viewDate = viewDate.plusDays(1);
+                    }
                     dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
                     Toast.makeText(Nootscreen.this, "No future dates", Toast.LENGTH_SHORT).show();
                 }
