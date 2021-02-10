@@ -89,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         try {
             mGoogleSignInClient.signOut();
-        }catch (Exception e) {}
+        } catch (Exception e) {
+        }
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    private void signIn(){
+
+    private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -132,43 +134,43 @@ public class MainActivity extends AppCompatActivity {
         String month = "";
         String day = "";
         String year = "";
-        year = date.substring(0,4);
+        year = date.substring(0, 4);
         month = date.substring(5, 7);
         day = date.substring(8);
-        return month+"-"+day+"-"+year;
+        return month + "-" + day + "-" + year;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN){
+        if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask){
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount acc = completedTask.getResult(ApiException.class);
             FirebaseGoogleAuth(acc);
-        }
-        catch (ApiException e){
+        } catch (ApiException e) {
             Toast.makeText(MainActivity.this, "Sign In Failed", Toast.LENGTH_SHORT).show();
             FirebaseGoogleAuth(null);
         }
     }
-    private void FirebaseGoogleAuth(GoogleSignInAccount acct){
+
+    private void FirebaseGoogleAuth(GoogleSignInAccount acct) {
         AuthCredential authCredential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(MainActivity.this, "Successful", Toast.LENGTH_SHORT).show();
                     FirebaseUser user = mAuth.getCurrentUser();
                     final FirebaseUser copyUser = mAuth.getCurrentUser();
 
                     account = GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-                    if (account != null){
+                    if (account != null) {
                         String personName = account.getDisplayName();
                         String personGivenName = account.getGivenName();
                         String personFamilyName = account.getFamilyName();
@@ -176,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                         String personId = account.getId();
                         Uri personPhoto = account.getPhotoUrl();
 
-                                            }
+                    }
 
 
                     //loop through to find if user is duplicate
@@ -209,8 +211,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
                     });
-                }
-                else{
+                } else {
                     Toast.makeText(MainActivity.this, "Unsuccessful", Toast.LENGTH_SHORT).show();
 
                 }
@@ -233,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
 //                .commit();
     }
 
-    private void updateUI(FirebaseUser user){
+    private void updateUI(FirebaseUser user) {
         signOutButton.setVisibility(View.VISIBLE);
 
         enterBtn.setVisibility(View.VISIBLE);
