@@ -60,7 +60,7 @@ public class Nootscreen extends AppCompatActivity {
                 startActivity(new Intent(Nootscreen.this, SearchFragment.class));
             }
         });
-
+        setTextviews();
         weightTV = findViewById(R.id.weightTV);
         weightTV.setText(Integer.toString(MainActivity.getUser().getWeight()));
 
@@ -82,23 +82,25 @@ public class Nootscreen extends AppCompatActivity {
                 try {
                     viewDate = viewDate.plusDays(1);
                     dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(viewDate.toString())).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            try {
-                                calTV.setText(dataSnapshot.child("calories").getValue().toString());
-                                fatTV.setText(dataSnapshot.child("fat").getValue().toString());
-                                carbTV.setText(dataSnapshot.child("carbs").getValue().toString());
-                                proteinTV.setText(dataSnapshot.child("protein").getValue().toString());
-                                sugarTV.setText(dataSnapshot.child("sugar").getValue().toString());
-                            }catch (Exception e) {
-                                viewDate = viewDate.minusDays(1);
-                                dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
-                                Toast.makeText(Nootscreen.this, "No future dates", Toast.LENGTH_SHORT).show();}
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}
-                    });
+//                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(viewDate.toString())).addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                            try {
+//                                calTV.setText(dataSnapshot.child("calories").getValue().toString());
+//                                fatTV.setText(dataSnapshot.child("fat").getValue().toString());
+//                                carbTV.setText(dataSnapshot.child("carbs").getValue().toString());
+//                                proteinTV.setText(dataSnapshot.child("protein").getValue().toString());
+//                                sugarTV.setText(dataSnapshot.child("sugar").getValue().toString());
+//                            }catch (Exception e) {
+//                                viewDate = viewDate.minusDays(1);
+//                                dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
+//                                Toast.makeText(Nootscreen.this, "No future dates", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+//                    });
+                    setTextviews();
                 }catch (Exception e) {
                     Toast.makeText(Nootscreen.this, "No future dates", Toast.LENGTH_SHORT).show();
                 }
@@ -112,23 +114,24 @@ public class Nootscreen extends AppCompatActivity {
                 try {
                     viewDate = viewDate.minusDays(1);
                     dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(viewDate.toString())).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            try {
-                                calTV.setText(dataSnapshot.child("calories").getValue().toString());
-                                fatTV.setText(dataSnapshot.child("fat").getValue().toString());
-                                carbTV.setText(dataSnapshot.child("carbs").getValue().toString());
-                                proteinTV.setText(dataSnapshot.child("protein").getValue().toString());
-                                sugarTV.setText(dataSnapshot.child("sugar").getValue().toString());
-                            }catch (Exception e) {
-                                viewDate = viewDate.plusDays(1);
-                                dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
-                                Toast.makeText(Nootscreen.this, "No previous dates", Toast.LENGTH_SHORT).show();}
-                        }
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {}
-                    });
+//                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(viewDate.toString())).addValueEventListener(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                            try {
+//                                calTV.setText(dataSnapshot.child("calories").getValue().toString());
+//                                fatTV.setText(dataSnapshot.child("fat").getValue().toString());
+//                                carbTV.setText(dataSnapshot.child("carbs").getValue().toString());
+//                                proteinTV.setText(dataSnapshot.child("protein").getValue().toString());
+//                                sugarTV.setText(dataSnapshot.child("sugar").getValue().toString());
+//                            }catch (Exception e) {
+//                                viewDate = viewDate.plusDays(1);
+//                                dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
+//                                Toast.makeText(Nootscreen.this, "No previous dates", Toast.LENGTH_SHORT).show();}
+//                        }
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+//                    });
+                    setTextviews();
                 }catch (Exception e) {
                     Toast.makeText(Nootscreen.this, "No previous dates", Toast.LENGTH_SHORT).show();
                 }
@@ -185,6 +188,27 @@ public class Nootscreen extends AppCompatActivity {
             public void onClick(View view) {
                 startActivity(new Intent(Nootscreen.this, GraphScreen.class));
             }
+        });
+    }
+
+    private void setTextviews() {
+        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(viewDate.toString())).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                try {
+                    calTV.setText(dataSnapshot.child("calories").getValue().toString());
+                    fatTV.setText(dataSnapshot.child("fat").getValue().toString());
+                    carbTV.setText(dataSnapshot.child("carbs").getValue().toString());
+                    proteinTV.setText(dataSnapshot.child("protein").getValue().toString());
+                    sugarTV.setText(dataSnapshot.child("sugar").getValue().toString());
+                }catch (Exception e) {
+                    viewDate = viewDate.minusDays(1);
+                    dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
+                    Toast.makeText(Nootscreen.this, "No future dates", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
     }
 
