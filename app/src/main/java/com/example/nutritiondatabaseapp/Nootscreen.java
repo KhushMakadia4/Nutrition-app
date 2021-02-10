@@ -62,7 +62,7 @@ public class Nootscreen extends AppCompatActivity {
         });
 
         weightTV = findViewById(R.id.weightTV);
-        weightTV.setText(MainActivity.getUser().getWeight());
+        weightTV.setText(Integer.toString(MainActivity.getUser().getWeight()));
 
         dateTV = findViewById(R.id.dateTV);
         dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));

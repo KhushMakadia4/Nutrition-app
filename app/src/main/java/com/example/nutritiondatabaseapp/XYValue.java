@@ -1,19 +1,19 @@
 package com.example.nutritiondatabaseapp;
 
 public class XYValue {
-    private double x;
+    private String x;
     private double y;
 
-    public XYValue(double x, double y) {
+    public XYValue(String x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public double getX() {
+    public String getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(String x) {
         this.x = x;
     }
 
