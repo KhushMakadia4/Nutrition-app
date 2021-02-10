@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.os.strictmode.WebViewMethodCalledOnWrongThreadViolation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,14 +33,18 @@ import java.util.Iterator;
  * Use the {@link Nootscreen} factory method to
  * create an instance of this fragment.
  */
+@RequiresApi(api = Build.VERSION_CODES.O)
 public class Nootscreen extends AppCompatActivity {
 
     private Button searchActBtn;
-    private Button addDay;
+    private Button addDay, graphBtn;
+    private Button prevDate, nextDate;
     private TextView dateTV, calTV, fatTV, carbTV, proteinTV, sugarTV;
     Daily dailyUser = new Daily();
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     GoogleSignInAccount account;
+
+    private LocalDate viewDate = MainActivity.date;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -55,179 +60,131 @@ public class Nootscreen extends AppCompatActivity {
                 startActivity(new Intent(Nootscreen.this, SearchFragment.class));
             }
         });
+
+        dateTV = findViewById(R.id.dateTV);
+        dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
+
         calTV = findViewById(R.id.calTV);
         fatTV = findViewById(R.id.fatTV);
         carbTV = findViewById(R.id.carbsTV);
         proteinTV = findViewById(R.id.proteinTV);
         sugarTV = findViewById(R.id.sugarTV);
-        dateTV = findViewById(R.id.dateTV);
+
         addDay = findViewById(R.id.addDay);
 
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("calories").addListenerForSingleValueEvent(new ValueEventListener() {
+        nextDate = findViewById(R.id.nextDateTV);
+        nextDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onClick(View view) {
                 try {
-                    dailyUser.setCalories(Double.parseDouble(dataSnapshot.getValue().toString()));
-                    System.out.println("dailyCals: " + dailyUser.getCalories());
-                } catch (NullPointerException e) {
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("carbs").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
-                    dailyUser.setCarbs(Double.parseDouble(dataSnapshot.getValue().toString()));
-                } catch (NullPointerException e) {
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("fat").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
-                    dailyUser.setFat(Double.parseDouble(dataSnapshot.getValue().toString()));
-                } catch (NullPointerException e) {
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
+                    viewDate = viewDate.plusDays(1);
+                    dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
+                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(viewDate.toString())).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            try {
+                                calTV.setText(dataSnapshot.child("calories").getValue().toString());
+                                fatTV.setText(dataSnapshot.child("fat").getValue().toString());
+                                carbTV.setText(dataSnapshot.child("carbs").getValue().toString());
+                                proteinTV.setText(dataSnapshot.child("protein").getValue().toString());
+                                sugarTV.setText(dataSnapshot.child("sugar").getValue().toString());
+                            }catch (Exception e) {
+                                viewDate = viewDate.minusDays(1);
+                                dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
+                                Toast.makeText(Nootscreen.this, "No future dates", Toast.LENGTH_SHORT).show();}
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                    });
+                }catch (Exception e) {
+                    Toast.makeText(Nootscreen.this, "No future dates", Toast.LENGTH_SHORT).show();
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
         });
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("protein").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        prevDate = findViewById(R.id.prevDateTV);
+        prevDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onClick(View view) {
                 try {
-                    dailyUser.setProtein(Double.parseDouble(dataSnapshot.getValue().toString()));
-                } catch (NullPointerException e) {
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
+                    viewDate = viewDate.minusDays(1);
+                    dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
+                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(viewDate.toString())).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            try {
+                                calTV.setText(dataSnapshot.child("calories").getValue().toString());
+                                fatTV.setText(dataSnapshot.child("fat").getValue().toString());
+                                carbTV.setText(dataSnapshot.child("carbs").getValue().toString());
+                                proteinTV.setText(dataSnapshot.child("protein").getValue().toString());
+                                sugarTV.setText(dataSnapshot.child("sugar").getValue().toString());
+                            }catch (Exception e) {
+                                viewDate = viewDate.plusDays(1);
+                                dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));
+                                Toast.makeText(Nootscreen.this, "No previous dates", Toast.LENGTH_SHORT).show();}
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {}
+                    });
+                }catch (Exception e) {
+                    Toast.makeText(Nootscreen.this, "No previous dates", Toast.LENGTH_SHORT).show();
                 }
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
         });
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("sugar").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                try {
-                    dailyUser.setSugar(Double.parseDouble(dataSnapshot.getValue().toString()));
-                    calTV.setText(Double.toString(dailyUser.getCalories()));
-                    carbTV.setText(Double.toString(dailyUser.getCarbs()));
-                    fatTV.setText(Double.toString(dailyUser.getFat()));
-                    proteinTV.setText(Double.toString(dailyUser.getProtein()));
-                    sugarTV.setText(Double.toString(dailyUser.getSugar()));
-                } catch (NullPointerException e) {
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
 
         addDay.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                MainActivity.date = MainActivity.date.plusDays(1);
-                setDateTV(MainActivity.date.toString());
-                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("calories").addListenerForSingleValueEvent(new ValueEventListener() {
+                LocalDate tempDate = MainActivity.date;
+                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(tempDate.plusDays(1).toString())).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         try {
-                            dailyUser.setCalories(Double.parseDouble(dataSnapshot.getValue().toString()));
-                            System.out.println("dailyCals: " + dailyUser.getCalories());
-                        } catch (NullPointerException e) {
-                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                        }
+                            if (Double.parseDouble(dataSnapshot.child("calories").getValue().toString()) >= 0) {//populated
+                                MainActivity.date = MainActivity.date.plusDays(1);
+                                System.out.println("POPULATEDDDDD" + MainActivity.modifiedDate(MainActivity.date.toString()));
+                                return;
+                            }
+                        }catch (Exception e) {
+                            System.out.println("not populated");
+                            MainActivity.date = MainActivity.date.plusDays(1);
+                            Toast.makeText(Nootscreen.this, MainActivity.modifiedDate(MainActivity.date.toString()) + " already exists", Toast.LENGTH_SHORT).show();
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("calories").setValue(0);
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("carbs").setValue(0);
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("fat").setValue(0);
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("protein").setValue(0);
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("sugar").setValue(0);
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("carbs").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        try {
-                            dailyUser.setCarbs(Double.parseDouble(dataSnapshot.getValue().toString()));
-                        } catch (NullPointerException e) {
-                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
                         }
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("fat").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        try {
-                            dailyUser.setFat(Double.parseDouble(dataSnapshot.getValue().toString()));
-                        } catch (NullPointerException e) {
-                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
-                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("protein").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        try {
-                            dailyUser.setProtein(Double.parseDouble(dataSnapshot.getValue().toString()));
-                        } catch (NullPointerException e) {
-                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                        }
-                    }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("sugar").addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        try {
-                            dailyUser.setSugar(Double.parseDouble(dataSnapshot.getValue().toString()));
-                            calTV.setText(Double.toString(dailyUser.getCalories()));
-                            carbTV.setText(Double.toString(dailyUser.getCarbs()));
-                            fatTV.setText(Double.toString(dailyUser.getFat()));
-                            proteinTV.setText(Double.toString(dailyUser.getProtein()));
-                            sugarTV.setText(Double.toString(dailyUser.getSugar()));
-                        } catch (NullPointerException e) {
-                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                        }
-                    }
+            }
+        });
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-//                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
+
+
+
+
+
+
+        //actual abstract normal code part
+        graphBtn = findViewById(R.id.graphScrnBtn);
+        graphBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Nootscreen.this, GraphScreen.class));
             }
         });
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setDateTV(String date) {
