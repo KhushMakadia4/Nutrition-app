@@ -39,7 +39,7 @@ public class Nootscreen extends AppCompatActivity {
     private Button searchActBtn;
     private Button addDay, graphBtn;
     private Button prevDate, nextDate;
-    private TextView dateTV, calTV, fatTV, carbTV, proteinTV, sugarTV;
+    private TextView dateTV, calTV, fatTV, carbTV, proteinTV, sugarTV, weightTV;
     Daily dailyUser = new Daily();
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     GoogleSignInAccount account;
@@ -60,6 +60,9 @@ public class Nootscreen extends AppCompatActivity {
                 startActivity(new Intent(Nootscreen.this, SearchFragment.class));
             }
         });
+
+        weightTV = findViewById(R.id.weightTV);
+        weightTV.setText(MainActivity.getUser().getWeight());
 
         dateTV = findViewById(R.id.dateTV);
         dateTV.setText(MainActivity.modifiedDate(viewDate.toString()));

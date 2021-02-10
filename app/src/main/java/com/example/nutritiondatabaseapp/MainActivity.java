@@ -58,13 +58,17 @@ public class MainActivity extends AppCompatActivity {
     private Button enterBtn;
     private EditText weightBar;
     private EditText heightBar;
-    private User user = new User();
+    private static User user = new User();
     private Daily dailyUser = new Daily();
     GoogleSignInAccount account;
     static LocalDate date = LocalDate.now();
 
 
     FragmentTransaction fragmentTransaction;
+
+    public static User getUser() {
+        return user;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -241,10 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setUserValues(DataSnapshot item) {
-        System.out.println(item.child("weight").getValue().toString());
-        System.out.println(item.child("height").getValue().toString());
         user.setWeight(Integer.parseInt(item.child("weight").getValue().toString()));
         user.setHeight(Integer.parseInt(item.child("height").getValue().toString()));
-
     }
 }
