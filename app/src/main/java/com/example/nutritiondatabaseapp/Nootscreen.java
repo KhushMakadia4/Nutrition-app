@@ -69,7 +69,7 @@ public class Nootscreen extends AppCompatActivity {
                 try {
                     dailyUser.setCalories(Double.parseDouble(dataSnapshot.getValue().toString()));
                     System.out.println("dailyCals: " + dailyUser.getCalories());
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
                 }
 
@@ -84,9 +84,10 @@ public class Nootscreen extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
                     dailyUser.setCarbs(Double.parseDouble(dataSnapshot.getValue().toString()));
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                }                        }
+                }
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -97,7 +98,7 @@ public class Nootscreen extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
                     dailyUser.setFat(Double.parseDouble(dataSnapshot.getValue().toString()));
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
                 }
             }
@@ -111,7 +112,7 @@ public class Nootscreen extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
                     dailyUser.setProtein(Double.parseDouble(dataSnapshot.getValue().toString()));
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
                 }
             }
@@ -130,9 +131,10 @@ public class Nootscreen extends AppCompatActivity {
                     fatTV.setText(Double.toString(dailyUser.getFat()));
                     proteinTV.setText(Double.toString(dailyUser.getProtein()));
                     sugarTV.setText(Double.toString(dailyUser.getSugar()));
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                }                        }
+                }
+            }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -148,12 +150,12 @@ public class Nootscreen extends AppCompatActivity {
                 mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("calories").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            try {
-                                dailyUser.setCalories(Double.parseDouble(dataSnapshot.getValue().toString()));
-                                System.out.println("dailyCals: " + dailyUser.getCalories());
-                            } catch (NullPointerException e){
-                                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                            }
+                        try {
+                            dailyUser.setCalories(Double.parseDouble(dataSnapshot.getValue().toString()));
+                            System.out.println("dailyCals: " + dailyUser.getCalories());
+                        } catch (NullPointerException e) {
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
+                        }
 
                     }
 
@@ -161,69 +163,72 @@ public class Nootscreen extends AppCompatActivity {
                     public void onCancelled(@NonNull DatabaseError databaseError) {
                     }
                 });
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("carbs").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            try {
-                                dailyUser.setCarbs(Double.parseDouble(dataSnapshot.getValue().toString()));
-                            } catch (NullPointerException e){
-                                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                            }                        }
+                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("carbs").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            dailyUser.setCarbs(Double.parseDouble(dataSnapshot.getValue().toString()));
+                        } catch (NullPointerException e) {
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
+                        }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("fat").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            dailyUser.setFat(Double.parseDouble(dataSnapshot.getValue().toString()));
+                        } catch (NullPointerException e) {
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
                         }
-                    });
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("fat").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            try {
-                                dailyUser.setFat(Double.parseDouble(dataSnapshot.getValue().toString()));
-                            } catch (NullPointerException e){
-                                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                            }
-                        }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("protein").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            dailyUser.setProtein(Double.parseDouble(dataSnapshot.getValue().toString()));
+                        } catch (NullPointerException e) {
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
                         }
-                    });
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("protein").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            try {
-                                dailyUser.setProtein(Double.parseDouble(dataSnapshot.getValue().toString()));
-                            } catch (NullPointerException e){
-                                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                            }
-                        }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("sugar").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        try {
+                            dailyUser.setSugar(Double.parseDouble(dataSnapshot.getValue().toString()));
+                            calTV.setText(Double.toString(dailyUser.getCalories()));
+                            carbTV.setText(Double.toString(dailyUser.getCarbs()));
+                            fatTV.setText(Double.toString(dailyUser.getFat()));
+                            proteinTV.setText(Double.toString(dailyUser.getProtein()));
+                            sugarTV.setText(Double.toString(dailyUser.getSugar()));
+                        } catch (NullPointerException e) {
+                            mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
                         }
-                    });
-                    mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("sugar").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            try {
-                                dailyUser.setSugar(Double.parseDouble(dataSnapshot.getValue().toString()));
-                                calTV.setText(Double.toString(dailyUser.getCalories()));
-                                carbTV.setText(Double.toString(dailyUser.getCarbs()));
-                                fatTV.setText(Double.toString(dailyUser.getFat()));
-                                proteinTV.setText(Double.toString(dailyUser.getProtein()));
-                                sugarTV.setText(Double.toString(dailyUser.getSugar()));
-                            } catch (NullPointerException e){
-                                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                            }                        }
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                        }
-                    });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
 //                mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setDateTV(String date) {
         dateTV.setText(MainActivity.modifiedDate(date));
