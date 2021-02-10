@@ -133,8 +133,6 @@ public class SearchFragment extends AppCompatActivity {
         });
 
 
-
-
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setUserValues(DataSnapshot item) {
