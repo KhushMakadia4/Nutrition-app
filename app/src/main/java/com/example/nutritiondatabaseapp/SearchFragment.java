@@ -39,6 +39,7 @@ public class SearchFragment extends AppCompatActivity {
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private Button btn2;
     GoogleSignInAccount account;
+    private TextView multiplier;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class SearchFragment extends AppCompatActivity {
 
 
 //search bar auto complete text view
-
+        multiplier = findViewById(R.id.multiplier);
         searchTV = findViewById(R.id.searchTextView);
         searchBtn = findViewById(R.id.searchBtn);
         searchBtn.setOnClickListener(new View.OnClickListener() {
@@ -142,11 +143,11 @@ public class SearchFragment extends AppCompatActivity {
         double fats2 = Double.parseDouble(item.child(MainActivity.modifiedDate(MainActivity.date.toString())).child("fat").getValue().toString());
         double protein2 = Double.parseDouble(item.child(MainActivity.modifiedDate(MainActivity.date.toString())).child("protein").getValue().toString());
         double sugars2 = Double.parseDouble(item.child(MainActivity.modifiedDate(MainActivity.date.toString())).child("calories").getValue().toString());
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("calories").setValue(cals2 + Double.parseDouble(calories.getText().toString().substring(calories.getText().toString().indexOf(":") + 1)));
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("carbs").setValue(carbs2 + Double.parseDouble(carb.getText().toString().substring(carb.getText().toString().indexOf(":") + 1)));
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("fat").setValue(fats2 + Double.parseDouble(fat.getText().toString().substring(fat.getText().toString().indexOf(":") + 1)));
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("protein").setValue(protein2 + Double.parseDouble(protein.getText().toString().substring(protein.getText().toString().indexOf(":") + 1)));
-        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("sugar").setValue(sugars2 + Double.parseDouble(sugar.getText().toString().substring(sugar.getText().toString().indexOf(":") + 1)));
+        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("calories").setValue(cals2 + Double.parseDouble(multiplier.getText().toString())*Double.parseDouble(calories.getText().toString().substring(calories.getText().toString().indexOf(":") + 1)));
+        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("carbs").setValue(carbs2 + Double.parseDouble(multiplier.getText().toString())*Double.parseDouble(carb.getText().toString().substring(carb.getText().toString().indexOf(":") + 1)));
+        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("fat").setValue(fats2 + Double.parseDouble(multiplier.getText().toString())*Double.parseDouble(fat.getText().toString().substring(fat.getText().toString().indexOf(":") + 1)));
+        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("protein").setValue(protein2 + Double.parseDouble(multiplier.getText().toString())*Double.parseDouble(protein.getText().toString().substring(protein.getText().toString().indexOf(":") + 1)));
+        mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).child("sugar").setValue(sugars2 + Double.parseDouble(multiplier.getText().toString())*Double.parseDouble(sugar.getText().toString().substring(sugar.getText().toString().indexOf(":") + 1)));
 
         //        double carbs2 = Double.parseDouble(item.child("carbs").getValue().toString());
 //        double fats2 = Double.parseDouble(item.child("fat").getValue().toString());
