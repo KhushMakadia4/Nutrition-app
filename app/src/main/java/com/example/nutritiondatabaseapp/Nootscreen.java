@@ -57,10 +57,12 @@ public class Nootscreen extends AppCompatActivity {
                 MainActivity.date = MainActivity.date.plusDays(1);
                 setDateTV(MainActivity.date.toString());
                 mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
+                
 
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setDateTV(String date) {
         dateTV.setText(MainActivity.modifiedDate(date));
