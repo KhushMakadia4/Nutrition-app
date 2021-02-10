@@ -8,9 +8,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,8 +16,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.time.LocalDate;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,7 +53,7 @@ public class Nootscreen extends AppCompatActivity {
                 MainActivity.date = MainActivity.date.plusDays(1);
                 setDateTV(MainActivity.date.toString());
                 mDatabase.child("users").child(account.getDisplayName()).child(MainActivity.modifiedDate(MainActivity.date.toString())).setValue(dailyUser);
-                
+
 
             }
         });
